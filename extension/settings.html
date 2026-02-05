@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GDPR Scanner - Settings</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+      padding-bottom: 20px;
+      border-bottom: 2px solid #f0f0f0;
+    }
+
+    h1 {
+      color: #333;
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+
+    .section {
+      margin-bottom: 30px;
+    }
+
+    .section h2 {
+      color: #333;
+      font-size: 18px;
+      margin-bottom: 15px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      color: #666;
+      font-size: 14px;
+      margin-bottom: 8px;
+    }
+
+    input[type="text"],
+    input[type="url"],
+    input[type="email"] {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 14px;
+      transition: border-color 0.2s;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: #667eea;
+    }
+
+    .toggle-group {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 15px;
+      background: #f8f9fa;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+
+    .toggle-label {
+      color: #333;
+      font-size: 14px;
+    }
+
+    .toggle {
+      position: relative;
+      width: 50px;
+      height: 26px;
+    }
+
+    .toggle input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      transition: 0.4s;
+      border-radius: 26px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 20px;
+      width: 20px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: 0.4s;
+      border-radius: 50%;
+    }
+
+    input:checked + .slider {
+      background-color: #667eea;
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(24px);
+    }
+
+    .subscription-card {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 25px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+    }
+
+    .subscription-card h3 {
+      font-size: 14px;
+      opacity: 0.8;
+      margin-bottom: 5px;
+    }
+
+    .subscription-card .tier {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .subscription-card .features {
+      font-size: 14px;
+      opacity: 0.9;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+    }
+
+    .btn-secondary {
+      background: #f0f0f0;
+      color: #333;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .status-badge.free {
+      background: #e0e0e0;
+      color: #666;
+    }
+
+    .status-badge.pro {
+      background: #22c55e;
+      color: white;
+    }
+
+    .status-badge.agency {
+      background: #f59e0b;
+      color: white;
+    }
+
+    .message {
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      display: none;
+    }
+
+    .message.success {
+      background: #dcfce7;
+      color: #166534;
+      display: block;
+    }
+
+    .message.error {
+      background: #fee2e2;
+      color: #991b1b;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>⚙️ Settings</h1>
+    </header>
+
+    <div id="message" class="message"></div>
+
+    <div class="section">
+      <h2>Subscription</h2>
+      <div class="subscription-card">
+        <h3>Current Plan</h3>
+        <div class="tier" id="current-tier">Free</div>
+        <div class="features" id="tier-features">1 scan/week, basic report</div>
+      </div>
+      <button class="btn btn-primary" id="upgrade-btn" onclick="upgradePlan()">
+        ⭐ Upgrade to Pro - £19/mo
+      </button>
+    </div>
+
+    <div class="section">
+      <h2>Notifications</h2>
+      <div class="toggle-group">
+        <span class="toggle-label">Auto-scan on page load (Pro)</span>
+        <label class="toggle">
+          <input type="checkbox" id="auto-scan" disabled>
+          <span class="slider"></span>
+        </label>
+      </div>
+      <div class="toggle-group">
+        <span class="toggle-label">Weekly compliance alerts (Pro)</span>
+        <label class="toggle">
+          <input type="checkbox" id="weekly-alerts" disabled>
+          <span class="slider"></span>
+        </label>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>API Configuration</h2>
+      <div class="form-group">
+        <label for="api-url">Backend API URL</label>
+        <input type="url" id="api-url" placeholder="https://api.gdprscanner.ai">
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Account</h2>
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" placeholder="you@example.com">
+      </div>
+    </div>
+
+    <div class="btn-group">
+      <button class="btn btn-primary" onclick="saveSettings()">Save Settings</button>
+      <button class="btn btn-secondary" onclick="resetSettings()">Reset to Defaults</button>
+    </div>
+  </div>
+
+  <script>
+    // Load settings on page load
+    document.addEventListener('DOMContentLoaded', () => {
+      chrome.storage.sync.get(['apiUrl', 'email', 'tier', 'autoScan', 'weeklyAlerts'], (result) => {
+        document.getElementById('api-url').value = result.apiUrl || '';
+        document.getElementById('email').value = result.email || '';
+
+        const tier = result.tier || 'free';
+        const tierEl = document.getElementById('current-tier');
+        const featuresEl = document.getElementById('tier-features');
+        const upgradeBtn = document.getElementById('upgrade-btn');
+        const autoScanEl = document.getElementById('auto-scan');
+        const weeklyAlertsEl = document.getElementById('weekly-alerts');
+
+        if (tier === 'pro') {
+          tierEl.textContent = 'Pro ⭐';
+          featuresEl.textContent = 'Unlimited scans, PDF export, weekly alerts';
+          upgradeBtn.textContent = '🚀 Upgrade to Agency - £49/mo';
+          autoScanEl.disabled = false;
+          weeklyAlertsEl.disabled = false;
+          autoScanEl.checked = result.autoScan || false;
+          weeklyAlertsEl.checked = result.weeklyAlerts || false;
+        } else if (tier === 'agency') {
+          tierEl.textContent = 'Agency 🏢';
+          featuresEl.textContent = 'Bulk domains, team seats, white-label reports';
+          upgradeBtn.style.display = 'none';
+          autoScanEl.disabled = false;
+          weeklyAlertsEl.disabled = false;
+          autoScanEl.checked = result.autoScan || false;
+          weeklyAlertsEl.checked = result.weeklyAlerts || false;
+        }
+      });
+    });
+
+    function saveSettings() {
+      const apiUrl = document.getElementById('api-url').value;
+      const email = document.getElementById('email').value;
+      const autoScan = document.getElementById('auto-scan').checked;
+      const weeklyAlerts = document.getElementById('weekly-alerts').checked;
+
+      chrome.storage.sync.set({
+        apiUrl,
+        email,
+        autoScan,
+        weeklyAlerts
+      }, () => {
+        showMessage('Settings saved successfully!', 'success');
+      });
+    }
+
+    function resetSettings() {
+      chrome.storage.sync.clear(() => {
+        document.getElementById('api-url').value = '';
+        document.getElementById('email').value = '';
+        document.getElementById('auto-scan').checked = false;
+        document.getElementById('weekly-alerts').checked = false;
+        showMessage('Settings reset to defaults', 'success');
+      });
+    }
+
+    function upgradePlan() {
+      // Open upgrade page
+      window.open('https://gdprscanner.ai/upgrade', '_blank');
+    }
+
+    function showMessage(text, type) {
+      const messageEl = document.getElementById('message');
+      messageEl.textContent = text;
+      messageEl.className = `message ${type}`;
+      setTimeout(() => {
+        messageEl.className = 'message';
+      }, 3000);
+    }
+  </script>
+</body>
+</html>
